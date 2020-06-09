@@ -33,6 +33,27 @@ exports.getGames = functions.https.onRequest((req, res) => {
     });
 });
 
-exports.helloWorld = functions.https.onRequest((req, res) => {
+exports.createGame = functions.https.onRequest((req, res) => {
+    
+    let gamesRef = db.collection("boardgames");
+    
+    const newGame = {
+        title: req.body.title,
+        ImageUrl: req.body.ImageUrl
+    };
+
+    cors(req, res, () => {
+        db.collection("boardgames")
+        .add(newGame)
+        .then((doc) => {
+            res.json({message: "Success!"})
+            return res;
+        })
+        .catch((err) => {
+            res.status(500).json({ error: "Something went horribly wrong!!"});
+            console.error(err);
+        })
+    });
+
 
 });

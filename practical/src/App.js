@@ -18,7 +18,12 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { spacing } from '@material-ui/system';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import TextField from '@material-ui/core/TextField';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -67,6 +72,8 @@ function Game({ game }) {
   );
 }
 
+
+
 class BoardgameList extends React.Component {
 
   state = {
@@ -114,16 +121,78 @@ class BoardgameList extends React.Component {
   }
 }
 
-function AddNewGameButton() {
+function AddNewGameButton({ setOpen }) {
 
   return (
-    <Button variant="contained" color="primary">
-    Add New Game
-  </Button>
+    <Button variant="contained" color="primary" onClick={() => { setOpen() }}>
+      Add New Game
+    </Button>
+  );
+}
+
+function AddGameForm({ open, handleClose, postGames }) {
+
+
+
+  return (
+    <div>
+      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">New Game</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Add a new game
+          </DialogContentText>
+          <TextField
+            autoFocus
+            ref="title"
+            margin="dense"
+            id="name"
+            label="Game Title"
+            fullWidth
+          />
+          <TextField
+            ref="url"
+            margin="dense"
+            id="name"
+            label="Image Url"
+            fullWidth
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleClose, postGames()} color="primary">
+            Add
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+
   );
 }
 
 function App() {
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  function postGames(title, url) {
+    axios.post('https://us-central1-practical-4eb41.cloudfunctions.net/createGame', {
+      title: title,
+      ImageUrl: url
+    })
+      .then(function (response) {
+        console.log(response);
+      })
+  }
 
   const classes = useStyles();
 
@@ -131,7 +200,8 @@ function App() {
     <div>
       <NavBar />
       <BoardgameList />
-      <AddNewGameButton spacing={4}/>
+      <AddNewGameButton setOpen={handleClickOpen} spacing={4} />
+      <AddGameForm open={open} handleClose={handleClose} postGames={postGames} />
 
     </div>
   );
