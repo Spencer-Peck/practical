@@ -18,6 +18,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import { spacing } from '@material-ui/system';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -53,16 +54,16 @@ function NavBar() {
 
 }
 
-function Game ({game}) {
+function Game({ game }) {
   return (
     <TableRow >
-    <TableCell component="th" scope="row">
-      {game.title}
-    </TableCell>
-    <TableCell align="right">
-    <img src={game.ImageUrl} alt="Italian Trulli" width="100" height="100"></img>
-    </TableCell>
-  </TableRow>
+      <TableCell component="th" scope="row">
+        {game.title}
+      </TableCell>
+      <TableCell align="right">
+        <img src={game.ImageUrl} alt="Italian Trulli" width="100" height="100"></img>
+      </TableCell>
+    </TableRow>
   );
 }
 
@@ -87,14 +88,14 @@ class BoardgameList extends React.Component {
 
     //const classes = useStyles();
     let gamesMarkup = this.state.games ? (
-      this.state.games.map((game) => <Game game={game}/>)
+      this.state.games.map((game) => <Game game={game} />)
     ) : <p>Loading...</p>
 
     return (
       <Grid container spacing={16}>
         <Grid item sm={8} xs={12}>
           <TableContainer component={Paper}>
-            <Table  aria-label="simple table">
+            <Table aria-label="simple table">
               <TableHead>
                 <TableRow>
                   <TableCell>Game</TableCell>
@@ -113,6 +114,15 @@ class BoardgameList extends React.Component {
   }
 }
 
+function AddNewGameButton() {
+
+  return (
+    <Button variant="contained" color="primary">
+    Add New Game
+  </Button>
+  );
+}
+
 function App() {
 
   const classes = useStyles();
@@ -121,6 +131,7 @@ function App() {
     <div>
       <NavBar />
       <BoardgameList />
+      <AddNewGameButton spacing={4}/>
 
     </div>
   );
