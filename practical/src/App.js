@@ -53,6 +53,19 @@ function NavBar() {
 
 }
 
+function Game ({game}) {
+  return (
+    <TableRow >
+    <TableCell component="th" scope="row">
+      {game.title}
+    </TableCell>
+    <TableCell align="right">
+    <img src={game.ImageUrl} alt="Italian Trulli" width="100" height="100"></img>
+    </TableCell>
+  </TableRow>
+  );
+}
+
 class BoardgameList extends React.Component {
 
   state = {
@@ -74,7 +87,7 @@ class BoardgameList extends React.Component {
 
     //const classes = useStyles();
     let gamesMarkup = this.state.games ? (
-      this.state.games.map(game => <p>{game.title}</p>)
+      this.state.games.map((game) => <Game game={game}/>)
     ) : <p>Loading...</p>
 
     return (
@@ -89,12 +102,7 @@ class BoardgameList extends React.Component {
                 </TableRow>
               </TableHead>
               <TableBody>
-                  <TableRow >
-                    <TableCell component="th" scope="row">
-                      {gamesMarkup}
-                    </TableCell>
-                    <TableCell align="right"></TableCell>
-                  </TableRow>
+                {gamesMarkup}
               </TableBody>
             </Table>
           </TableContainer>
